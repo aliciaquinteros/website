@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Alicia Quinteros" />
+    
+    <link rel="shortcut icon" type="image/x-icon" href="../../img/favicon.ico">
+    <title>Exploratory Analysis Project</title>
+    <meta name="generator" content="Hugo 0.79.0" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../../css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+  </head>
+
+  <body>
+    <div id="wrap">
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="../../"><i class="fa fa-home"></i></a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="../../post/">BLOG</a></li>
+        
+        <li><a href="../../projects/">PROJECTS</a></li>
+        
+        <li><a href="../../resume/">RESUME</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="../../project/project1/">Exploratory Analysis Project</a></strong>
+          </h3>
+        </div>
+ 
+<div class="blog-title">
+          <h4>
+         December 3, 2020 
+            &nbsp;&nbsp;
+            
+          </h4>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+<script src="../../rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="../../rmarkdown-libs/plotly-binding/plotly.js"></script>
+<script src="../../rmarkdown-libs/typedarray/typedarray.min.js"></script>
+<script src="../../rmarkdown-libs/jquery/jquery.min.js"></script>
+<link href="../../rmarkdown-libs/crosstalk/css/crosstalk.css" rel="stylesheet" />
+<script src="../../rmarkdown-libs/crosstalk/js/crosstalk.min.js"></script>
+<link href="../../rmarkdown-libs/plotly-htmlwidgets-css/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="../../rmarkdown-libs/plotly-main/plotly-latest.min.js"></script>
+
+
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<div id="the-two-datasets-that-i-choose-for-this-project-are-energy-census-and-economic-data-in-the-united-states-from-2010-2014-and-pollution-levels-in-the-us-from-2000-2016.-the-energy-and-census-data-set-contains-the-region-total-energy-consumption-per-year-total-energy-production-and-total-expidentures-per-year-in-each-state.-moreover-the-pollution-dataset-contains-four-different-pollutants-methane-ozone-nitrogen-dioxide-and-sulfur-dioxide-found-in-the-different-states-of-the-us.-i-obtained-these-datasets-from-kaggle-where-the-pollution-data-was-aquired-through-the-us-epa-and-the-energy-dataset-used-the-census-website-and-the-eia-for-the-energy-information." class="section level5">
+<h5>The two datasets that I choose for this project are: Energy Census and Economic Data in the United States from 2010-2014 and Pollution levels in the US from 2000-2016. The Energy and Census data set contains the region, total energy consumption per year, total energy production, and total expidentures per year in each state. Moreover, the Pollution dataset contains four different pollutants: Methane, Ozone, Nitrogen Dioxide, and Sulfur Dioxide found in the different states of the US. I obtained these datasets from Kaggle where the pollution data was aquired through the US EPA and the Energy dataset used the Census website and the EIA for the energy information.</h5>
+</div>
+<div id="by-comparing-the-amount-of-energy-produced-and-used-in-the-us-by-the-people-i-would-like-to-find-out-the-correlation-with-the-levels-of-pollution-in-the-atmosphere-in-comparison-to-the-usage-of-energy-in-each-state.-looking-into-the-different-states-and-the-different-levels-of-energy-consumption-we-would-be-able-to-determine-if-population-size-plays-a-big-role-in-how-much-pollution-is-generated-due-to-the-usage-and-creation-of-energy.-i-am-interested-in-this-topic-because-climate-change-will-be-a-big-factor-in-the-upcoming-years-and-as-a-way-to-further-understand-how-much-pollution-is-being-generated." class="section level5">
+<h5>By comparing the amount of energy produced and used in the US by the people, I would like to find out the correlation with the levels of pollution in the atmosphere in comparison to the usage of energy in each state. Looking into the different states and the different levels of energy consumption, we would be able to determine if population size plays a big role in how much pollution is generated due to the usage and creation of energy. I am interested in this topic because climate change will be a big factor in the upcoming years and as a way to further understand how much pollution is being generated.</h5>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
+<pre><code>## ✓ ggplot2 3.3.2     ✓ purrr   0.3.4
+## ✓ tibble  3.0.3     ✓ dplyr   1.0.1
+## ✓ tidyr   1.1.1     ✓ stringr 1.4.0
+## ✓ readr   1.3.1     ✓ forcats 0.5.0</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(dplyr)
+getwd()</code></pre>
+<pre><code>## [1] &quot;/stor/home/aeq242/R/website/content/project&quot;</code></pre>
+<pre class="r"><code>library(&quot;readr&quot;)
+Pollution &lt;- read.csv(&quot;/stor/home/aeq242/SDS348_Fall2020/Data/pollution_us_2000_2016.csv&quot;)
+Energy &lt;- read.csv(&quot;/stor/home/aeq242/Energy Census and Economic Data US 2010-2014.csv&quot;)</code></pre>
+</div>
+</div>
+<div id="tidying-and-rearranging-datasets" class="section level2">
+<h2>Tidying and Rearranging Datasets</h2>
+<pre><code>## # A tibble: 38,426,542 x 31
+##        X State.Code County.Code Site.Num Address County City  Date.Local
+##    &lt;int&gt;      &lt;int&gt;       &lt;int&gt;    &lt;int&gt; &lt;fct&gt;   &lt;fct&gt;  &lt;fct&gt; &lt;fct&gt;     
+##  1     0          4          13     3002 1645 E… Maric… Phoe… 2000-01-01
+##  2     0          4          13     3002 1645 E… Maric… Phoe… 2000-01-01
+##  3     0          4          13     3002 1645 E… Maric… Phoe… 2000-01-01
+##  4     0          4          13     3002 1645 E… Maric… Phoe… 2000-01-01
+##  5     0          4          13     3002 1645 E… Maric… Phoe… 2000-01-01
+##  6     0          4          13     3002 1645 E… Maric… Phoe… 2000-01-01
+##  7     0          4          13     3002 1645 E… Maric… Phoe… 2000-01-01
+##  8     0          4          13     3002 1645 E… Maric… Phoe… 2000-01-01
+##  9     0          4          13     3002 1645 E… Maric… Phoe… 2000-01-01
+## 10     0          4          13     3002 1645 E… Maric… Phoe… 2000-01-01
+## # … with 38,426,532 more rows, and 23 more variables: NO2.Units &lt;fct&gt;,
+## #   NO2.Mean &lt;dbl&gt;, NO2.1st.Max.Value &lt;dbl&gt;, NO2.AQI &lt;int&gt;, O3.Units &lt;fct&gt;,
+## #   O3.Mean &lt;dbl&gt;, O3.1st.Max.Value &lt;dbl&gt;, O3.1st.Max.Hour &lt;int&gt;, O3.AQI &lt;int&gt;,
+## #   SO2.Units &lt;fct&gt;, SO2.Mean &lt;dbl&gt;, SO2.1st.Max.Value &lt;dbl&gt;,
+## #   SO2.1st.Max.Hour &lt;int&gt;, SO2.AQI &lt;dbl&gt;, CO.Units &lt;fct&gt;, CO.Mean &lt;dbl&gt;,
+## #   CO.1st.Max.Value &lt;dbl&gt;, CO.1st.Max.Hour &lt;int&gt;, CO.AQI &lt;dbl&gt;, `0` &lt;fct&gt;,
+## #   `11` &lt;fct&gt;, NO2.1st.Max.Hour &lt;chr&gt;, State &lt;fct&gt;</code></pre>
+<pre><code>## # A tibble: 104 x 193
+##    StateCodes Region Division Coast TotalC2010 TotalC2011 TotalC2012 TotalC2013
+##    &lt;fct&gt;       &lt;int&gt;    &lt;int&gt; &lt;int&gt;      &lt;int&gt;      &lt;int&gt;      &lt;int&gt;      &lt;int&gt;
+##  1 AL              3        6     1    1931522    1905207    1879716    1919365
+##  2 AL              3        6     1    1931522    1905207    1879716    1919365
+##  3 AK              4        9     1     653221     653637     649341     621107
+##  4 AK              4        9     1     653221     653637     649341     621107
+##  5 AZ              4        8     0    1383531    1424944    1395839    1414383
+##  6 AZ              4        8     0    1383531    1424944    1395839    1414383
+##  7 AR              3        7     0    1120632    1122544    1067642    1096438
+##  8 AR              3        7     0    1120632    1122544    1067642    1096438
+##  9 CA              4        9     1    7760629    7777115    7564063    7665241
+## 10 CA              4        9     1    7760629    7777115    7564063    7665241
+## # … with 94 more rows, and 185 more variables: TotalC2014 &lt;int&gt;,
+## #   TotalP2010 &lt;int&gt;, TotalP2011 &lt;int&gt;, TotalP2012 &lt;int&gt;, TotalP2013 &lt;int&gt;,
+## #   TotalP2014 &lt;int&gt;, TotalE2010 &lt;dbl&gt;, TotalE2011 &lt;dbl&gt;, TotalE2012 &lt;dbl&gt;,
+## #   TotalE2013 &lt;dbl&gt;, TotalE2014 &lt;dbl&gt;, TotalPrice2010 &lt;dbl&gt;,
+## #   TotalPrice2011 &lt;dbl&gt;, TotalPrice2012 &lt;dbl&gt;, TotalPrice2013 &lt;dbl&gt;,
+## #   TotalPrice2014 &lt;dbl&gt;, TotalC10.11 &lt;dbl&gt;, TotalC11.12 &lt;dbl&gt;,
+## #   TotalC12.13 &lt;dbl&gt;, TotalC13.14 &lt;dbl&gt;, TotalP10.11 &lt;dbl&gt;, TotalP11.12 &lt;dbl&gt;,
+## #   TotalP12.13 &lt;dbl&gt;, TotalP13.14 &lt;dbl&gt;, TotalE10.11 &lt;dbl&gt;, TotalE11.12 &lt;dbl&gt;,
+## #   TotalE12.13 &lt;dbl&gt;, TotalE13.14 &lt;dbl&gt;, TotalPrice10.11 &lt;dbl&gt;,
+## #   TotalPrice11.12 &lt;dbl&gt;, TotalPrice12.13 &lt;dbl&gt;, TotalPrice13.14 &lt;dbl&gt;,
+## #   BiomassC2010 &lt;int&gt;, BiomassC2011 &lt;int&gt;, BiomassC2012 &lt;int&gt;,
+## #   BiomassC2013 &lt;int&gt;, BiomassC2014 &lt;int&gt;, CoalC2010 &lt;int&gt;, CoalC2011 &lt;int&gt;,
+## #   CoalC2012 &lt;int&gt;, CoalC2013 &lt;int&gt;, CoalC2014 &lt;int&gt;, CoalP2010 &lt;int&gt;,
+## #   CoalP2011 &lt;int&gt;, CoalP2012 &lt;int&gt;, CoalP2013 &lt;int&gt;, CoalP2014 &lt;int&gt;,
+## #   CoalE2010 &lt;dbl&gt;, CoalE2011 &lt;dbl&gt;, CoalE2012 &lt;dbl&gt;, CoalE2013 &lt;dbl&gt;,
+## #   CoalE2014 &lt;dbl&gt;, CoalPrice2010 &lt;dbl&gt;, CoalPrice2011 &lt;dbl&gt;,
+## #   CoalPrice2012 &lt;dbl&gt;, CoalPrice2013 &lt;dbl&gt;, CoalPrice2014 &lt;dbl&gt;,
+## #   ElecC2010 &lt;int&gt;, ElecC2011 &lt;int&gt;, ElecC2012 &lt;int&gt;, ElecC2013 &lt;int&gt;,
+## #   ElecC2014 &lt;int&gt;, ElecE2010 &lt;dbl&gt;, ElecE2011 &lt;dbl&gt;, ElecE2012 &lt;dbl&gt;,
+## #   ElecE2013 &lt;dbl&gt;, ElecE2014 &lt;dbl&gt;, ElecPrice2010 &lt;dbl&gt;, ElecPrice2011 &lt;dbl&gt;,
+## #   ElecPrice2012 &lt;dbl&gt;, ElecPrice2013 &lt;dbl&gt;, ElecPrice2014 &lt;dbl&gt;,
+## #   FossFuelC2010 &lt;int&gt;, FossFuelC2011 &lt;int&gt;, FossFuelC2012 &lt;int&gt;,
+## #   FossFuelC2013 &lt;int&gt;, FossFuelC2014 &lt;int&gt;, GeoC2010 &lt;int&gt;, GeoC2011 &lt;int&gt;,
+## #   GeoC2012 &lt;int&gt;, GeoC2013 &lt;int&gt;, GeoC2014 &lt;int&gt;, GeoP2010 &lt;int&gt;,
+## #   GeoP2011 &lt;int&gt;, GeoP2012 &lt;int&gt;, GeoP2013 &lt;int&gt;, GeoP2014 &lt;int&gt;,
+## #   HydroC2010 &lt;int&gt;, HydroC2011 &lt;int&gt;, HydroC2012 &lt;int&gt;, HydroC2013 &lt;int&gt;,
+## #   HydroC2014 &lt;int&gt;, HydroP2010 &lt;int&gt;, HydroP2011 &lt;int&gt;, HydroP2012 &lt;int&gt;,
+## #   HydroP2013 &lt;int&gt;, HydroP2014 &lt;int&gt;, NatGasC2010 &lt;int&gt;, NatGasC2011 &lt;int&gt;,
+## #   NatGasC2012 &lt;int&gt;, …</code></pre>
+<p>My datasets, Energy and Pollution, were already tidy from the start by containing a variable that matched its respective observation in its own column. By using pivot_wider, I was able to untidy them by creating a wider dataset, which made the observations from one variable receive their own columns as if they were variables. Then the observations from the second variable set became data for the rows of these new columns. The unnecessary extra columns were then made tidy by using pivot_longer so that the columns for the observations received their own column.</p>
+</div>
+<div id="joining-and-merging" class="section level2">
+<h2>Joining and Merging</h2>
+<pre class="r"><code>EnergyandPollution &lt;- Pollution %&gt;% full_join(Energy, by = &quot;State&quot;)</code></pre>
+<p>To combine my Pollution and Energy dataset, I used full_join and joined them by their common column which was State. There were 52 observations and 192 variables for the Energy dataset. For the Pollution data, there was a total of 1,746,661 observations and 29 variables. When combining both sets of data we get: 1,746,668 observations and 220 variables. No observations were dropped, all the data was retained! I used the code full_join to merge the datasets because my variables were not in the same position. Therefore, there were Na's that were introduced when there wasn't a match between the two datasets resulting in a slightly bigger observation size.</p>
+</div>
+<div id="wrangling" class="section level2">
+<h2>Wrangling</h2>
+<pre class="r"><code>FilteredData &lt;- EnergyandPollution %&gt;% filter(CO.Mean &gt; 0 &amp; str_detect(Date.Local, &quot;2014&quot;) &amp; TotalP2014 &gt;= 1000000 &amp; State!= &quot;United State&quot;) %&gt;% arrange(desc(TotalP2014), desc(CO.Mean)) %&gt;% mutate(Combined.Gasses = NO2.Mean + O3.Mean +SO2.Mean +CO.Mean) %&gt;% select(State, City, Date.Local, CO.Mean, TotalP2014, Combined.Gasses)
+head(FilteredData)</code></pre>
+<pre><code>##   State    City Date.Local  CO.Mean TotalP2014 Combined.Gasses
+## 1 Texas El Paso 2014-11-29 1.083333   17597105        28.00985
+## 2 Texas El Paso 2014-11-29 1.083333   17597105        27.90799
+## 3 Texas El Paso 2014-01-07 1.067947   17597105        36.61239
+## 4 Texas El Paso 2014-01-07 1.067947   17597105        36.84334
+## 5 Texas El Paso 2014-12-01 1.025000   17597105        28.55328
+## 6 Texas El Paso 2014-12-01 1.025000   17597105        28.47564</code></pre>
+<pre class="r"><code>EPMean &lt;- EnergyandPollution %&gt;% group_by(State) %&gt;% summarize(mean_CO = mean(CO.Mean, na.rm = T), mean_NO2 = mean(NO2.Mean, na.rm=T), mean_O3 = mean(O3.Mean, na.rm = T), mean_SO2 = mean(SO2.Mean, na.rm = T), mean_TotalP2014 = mean(TotalP2014, na.rm = T), mean_TotalC2014 = mean(TotalC2014, na.rm = T), mean_CoalC2014 = mean(CoalC2014, na.rm = T), mean_CoalP2014 = mean(CoalP2014, na.rm = T), mean_NatGasC2014 = mean(NatGasC2014, na.rm = T), mean_FossFuelC2014 = mean(FossFuelC2014, na.rm = T))</code></pre>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre class="r"><code>EPMean</code></pre>
+<pre><code>## # A tibble: 54 x 11
+##    State mean_CO mean_NO2 mean_O3 mean_SO2 mean_TotalP2014 mean_TotalC2014
+##    &lt;fct&gt;   &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;           &lt;dbl&gt;           &lt;dbl&gt;
+##  1 Alab…   0.213     9.41  0.0246    1.03          1353725         1958221
+##  2 Alas…   0.423    11.3   0.0128    6.08          1475129          603119
+##  3 Ariz…   0.491    19.1   0.0250    1.36           635050         1422590
+##  4 Arka…   0.422     9.75  0.0262    1.38          1454325         1114409
+##  5 Cali…   0.447    13.7   0.0261    1.15          2413494         7620082
+##  6 Colo…   0.443    19.6   0.0236    1.51          3041634         1477177
+##  7 Conn…   0.251     8.99  0.0289    0.912          197271          750019
+##  8 Coun…   0.854    20.3   0.0219    1.95              NaN             NaN
+##  9 Dela…   0.262    11.6   0.0265    1.01             4189          274013
+## 10 Dist…   0.790    17.7   0.0242    4.21              NaN             NaN
+## # … with 44 more rows, and 4 more variables: mean_CoalC2014 &lt;dbl&gt;,
+## #   mean_CoalP2014 &lt;dbl&gt;, mean_NatGasC2014 &lt;dbl&gt;, mean_FossFuelC2014 &lt;dbl&gt;</code></pre>
+<pre class="r"><code>EnergyandPollution %&gt;% group_by(State) %&gt;% summarize(max_CO = max(CO.Mean, na.rm = T), max_NO2 = max(NO2.Mean, na.rm=T), max_O3 = max(O3.Mean, na.rm = T), max_SO2 = max(SO2.Mean, na.rm = T), max_TotalP2014 = max(TotalP2014, na.rm = T), max_TotalC2014 = max(TotalC2014, na.rm = T), max_CoalC2014 = max(CoalC2014, na.rm = T), max_CoalP2014 = max(CoalP2014, na.rm = T), max_NatGasC2014 = max(NatGasC2014, na.rm = T), max_FossFuelC2014 = max(FossFuelC2014, na.rm = T))</code></pre>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre><code>## # A tibble: 54 x 11
+##    State max_CO max_NO2 max_O3 max_SO2 max_TotalP2014 max_TotalC2014
+##    &lt;fct&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;          &lt;dbl&gt;          &lt;dbl&gt;
+##  1 Alab…  0.706    58.6 0.0458    9.1         1353725        1958221
+##  2 Alas…  2.03     49.8 0.0390   31.5         1475129         603119
+##  3 Ariz…  3.58    140.  0.0632   19.4          635050        1422590
+##  4 Arka…  1.59     33.7 0.0627   10.4         1454325        1114409
+##  5 Cali…  7.51     98.1 0.0862   40.3         2413494        7620082
+##  6 Colo…  2.48     92   0.0619   21.1         3041634        1477177
+##  7 Conn…  1.25     53.4 0.0685   28.5          197271         750019
+##  8 Coun…  6.53     75.1 0.0616   13.8            -Inf           -Inf
+##  9 Dela…  0.85     36.5 0.0619    4.58           4189         274013
+## 10 Dist…  3.53     65.2 0.0705   42.9            -Inf           -Inf
+## # … with 44 more rows, and 4 more variables: max_CoalC2014 &lt;dbl&gt;,
+## #   max_CoalP2014 &lt;dbl&gt;, max_NatGasC2014 &lt;dbl&gt;, max_FossFuelC2014 &lt;dbl&gt;</code></pre>
+<pre class="r"><code>EnergyandPollution %&gt;% group_by(State) %&gt;% summarize(min_CO = min(CO.Mean, na.rm = T), min_NO2 = min(NO2.Mean, na.rm=T), min_O3 = min(O3.Mean, na.rm = T), min_SO2 = min(SO2.Mean, na.rm = T), min_TotalP2014 = min(TotalP2014, na.rm = T), min_TotalC2014 = min(TotalC2014, na.rm = T), min_CoalC2014 = min(CoalC2014, na.rm = T), min_CoalP2014 = min(CoalP2014, na.rm = T), min_NatGasC2014 = min(NatGasC2014, na.rm = T), min_FossFuelC2014 = min(FossFuelC2014, na.rm = T))</code></pre>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre><code>## # A tibble: 54 x 11
+##    State  min_CO min_NO2  min_O3 min_SO2 min_TotalP2014 min_TotalC2014
+##    &lt;fct&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;          &lt;dbl&gt;          &lt;dbl&gt;
+##  1 Alab…  0.0133  1.72   0.      -0.15          1353725        1958221
+##  2 Alas…  0.0858  0.558  0.       0.283         1475129         603119
+##  3 Ariz…  0       0      5.00e-4 -0.0333         635050        1422590
+##  4 Arka…  0       0.0417 4.20e-5  0             1454325        1114409
+##  5 Cali… -0.4    -1.87   0.      -1.52          2413494        7620082
+##  6 Colo… -0.196  -0.0952 0.      -1             3041634        1477177
+##  7 Conn…  0.0292 -1.19   0.      -0.167          197271         750019
+##  8 Coun…  0       1.91   0.       0                 Inf            Inf
+##  9 Dela…  0.0661  0.833  8.30e-5  0                4189         274013
+## 10 Dist… -0.1     0.0417 1.25e-4 -0.953             Inf            Inf
+## # … with 44 more rows, and 4 more variables: min_CoalC2014 &lt;dbl&gt;,
+## #   min_CoalP2014 &lt;dbl&gt;, min_NatGasC2014 &lt;dbl&gt;, min_FossFuelC2014 &lt;dbl&gt;</code></pre>
+<pre class="r"><code>EnergyandPollution %&gt;% group_by(State) %&gt;% summarize(median_CO = median(CO.Mean, na.rm = T), median_NO2 = median(NO2.Mean, na.rm=T), median_O3 = median(O3.Mean, na.rm = T), median_SO2 = median(SO2.Mean, na.rm = T), median_TotalP2014 = median(TotalP2014, na.rm = T), median_TotalC2014 = median(TotalC2014, na.rm = T), median_CoalC2014 = median(CoalC2014, na.rm = T), median_CoalP2014 = median(CoalP2014, na.rm = T), median_NatGasC2014 = median(NatGasC2014, na.rm = T), median_FossFuelC2014 = median(FossFuelC2014, na.rm = T))</code></pre>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre><code>## # A tibble: 54 x 11
+##    State median_CO median_NO2 median_O3 median_SO2 median_TotalP20…
+##    &lt;fct&gt;     &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;            &lt;dbl&gt;
+##  1 Alab…     0.194       8.69    0.0246      0.633          1353725
+##  2 Alas…     0.307       7.44    0.0112      4.16           1475129
+##  3 Ariz…     0.388      17.9     0.0248      1.08            635050
+##  4 Arka…     0.396       8.87    0.0260      1.21           1454325
+##  5 Cali…     0.343      10.9     0.026       0.76           2413494
+##  6 Colo…     0.383      18.9     0.0238      1.1            3041634
+##  7 Conn…     0.208       7.42    0.0291      0.405           197271
+##  8 Coun…     0.626      18.5     0.0212      1.17                NA
+##  9 Dela…     0.233      10.1     0.0269      0.833             4189
+## 10 Dist…     0.717      16.9     0.0236      3.42                NA
+## # … with 44 more rows, and 5 more variables: median_TotalC2014 &lt;dbl&gt;,
+## #   median_CoalC2014 &lt;dbl&gt;, median_CoalP2014 &lt;dbl&gt;, median_NatGasC2014 &lt;dbl&gt;,
+## #   median_FossFuelC2014 &lt;dbl&gt;</code></pre>
+<pre class="r"><code>EnergyandPollution %&gt;% group_by(State) %&gt;% summarize(distinct_CO = n_distinct(CO.Mean, na.rm = T), distinct_NO2 = n_distinct(NO2.Mean, na.rm=T), distinct_O3 = n_distinct(O3.Mean, na.rm = T), distinct_SO2 = n_distinct(SO2.Mean, na.rm = T), distinct_TotalP2014 = n_distinct(TotalP2014, na.rm = T), distinct_TotalC2014 = n_distinct(TotalC2014, na.rm = T), max_CoalC2014 = n_distinct(CoalC2014, na.rm = T), distinct_CoalP2014 = n_distinct(CoalP2014, na.rm = T), distinct_NatGasC2014 = n_distinct(NatGasC2014, na.rm = T), distinct_FossFuelC2014 = n_distinct(FossFuelC2014, na.rm = T))</code></pre>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre><code>## # A tibble: 54 x 11
+##    State distinct_CO distinct_NO2 distinct_O3 distinct_SO2 distinct_TotalP…
+##    &lt;fct&gt;       &lt;int&gt;        &lt;int&gt;       &lt;int&gt;        &lt;int&gt;            &lt;int&gt;
+##  1 Alab…         667          726         505          793                1
+##  2 Alas…         615          478         351          845                1
+##  3 Ariz…        3352         4621        1516         1964                1
+##  4 Arka…        2170         1975         930         1285                1
+##  5 Cali…       12923        19935        6755         5782                1
+##  6 Colo…        1515         3768        1438         2049                1
+##  7 Conn…        3182         2355        1557         2286                1
+##  8 Coun…        1900         1734        1077         1638                0
+##  9 Dela…         987          821         623          709                1
+## 10 Dist…        2377         2522        1314         2881                0
+## # … with 44 more rows, and 5 more variables: distinct_TotalC2014 &lt;int&gt;,
+## #   max_CoalC2014 &lt;int&gt;, distinct_CoalP2014 &lt;int&gt;, distinct_NatGasC2014 &lt;int&gt;,
+## #   distinct_FossFuelC2014 &lt;int&gt;</code></pre>
+<pre class="r"><code>EnergyandPollution %&gt;% group_by(State, City) %&gt;% summarize(mean_CO = mean(CO.Mean, na.rm = T), max_CO = max(CO.Mean, na.rm= T))</code></pre>
+<pre><code>## `summarise()` regrouping output by &#39;State&#39; (override with `.groups` argument)</code></pre>
+<pre><code>## # A tibble: 172 x 4
+## # Groups:   State [54]
+##    State      City              mean_CO max_CO
+##    &lt;fct&gt;      &lt;fct&gt;               &lt;dbl&gt;  &lt;dbl&gt;
+##  1 Alabama    Birmingham          0.213  0.706
+##  2 Alaska     Fairbanks           0.423  2.03 
+##  3 Arizona    Phoenix             0.582  3.58 
+##  4 Arizona    Scottsdale          0.582  2.15 
+##  5 Arizona    Tucson              0.307  1.36 
+##  6 Arkansas   North Little Rock   0.422  1.59 
+##  7 California Arden-Arcade        0.404  2.85 
+##  8 California Bakersfield         0.826  2.26 
+##  9 California Benicia             0.282  0.667
+## 10 California Berkeley            0.308  1.19 
+## # … with 162 more rows</code></pre>
+<pre class="r"><code>library(tibble)
+untidycor &lt;- EnergyandPollution %&gt;% filter(CO.Mean &gt; 0 &amp; str_detect(Date.Local, &quot;2014&quot;) &amp; TotalP2014 &gt;= 1000000 &amp; State!= &quot;United State&quot;) %&gt;% arrange(desc(TotalP2014), desc(CO.Mean))%&gt;% select(State, City, Date.Local, CO.Mean, TotalP2014, CoalP2014, CoalC2014, FossFuelC2014, NO2.Mean, O3.Mean, SO2.Mean, NatGasC2014)
+CorEP &lt;- untidycor %&gt;% select_if(is.numeric) %&gt;% cor(use = &quot;pair&quot;) 
+cordata &lt;- CorEP %&gt;% as.data.frame %&gt;% rownames_to_column(&quot;var1&quot;) %&gt;% pivot_longer(-1, names_to = &quot;var2&quot;, values_to = &quot;correlation&quot;)
+cordata</code></pre>
+<pre><code>## # A tibble: 81 x 3
+##    var1       var2          correlation
+##    &lt;chr&gt;      &lt;chr&gt;               &lt;dbl&gt;
+##  1 CO.Mean    CO.Mean            1     
+##  2 CO.Mean    TotalP2014        -0.265 
+##  3 CO.Mean    CoalP2014         -0.229 
+##  4 CO.Mean    CoalC2014         -0.306 
+##  5 CO.Mean    FossFuelC2014     -0.0836
+##  6 CO.Mean    NO2.Mean           0.665 
+##  7 CO.Mean    O3.Mean           -0.385 
+##  8 CO.Mean    SO2.Mean           0.162 
+##  9 CO.Mean    NatGasC2014       -0.0352
+## 10 TotalP2014 CO.Mean           -0.265 
+## # … with 71 more rows</code></pre>
+<p>In the combined dataset, EneryandPollution, we want to look at a similar time period for the individual states. Since we are using the Total Energy Produced in 2014, we filtered out the year 2014 from Date.Local from pollution as a way to compare the levels of monoxide in relation to the amount of energy created. However, we remove the observation &quot;United States&quot; so we are only left with individual observations by state. Additionally, we used the code &quot;arrange&quot; in descending order to see which state is producing the most Energy and which state has the most Carbon Monoxide levels, resulting in Texas! But, we want to compare the correlation of the greenhouse gasses, as well, to the total production of energy. We do this by using the code mutate and add the means of all the gasses to create the column, Combined.Gasses. Now, we are able to select the data we will be focusing on by using select.</p>
+<p>Each state had multiple observations of means for each gas (NO2, O3, SO2, and CO) and I wanted to take the average of all the means for each state to end up with a single value that represented the mean of the state altogether. However, I also wanted to compare how this correlated with energy consumption, energy production, coal production, coal consumption, and natural gas consumption. To accomplish this, I used group_by to link the states with their respective observation and summarize to take the : mean, max, min, median and distinct of each of these variables. Looking through our data, we can see that NO2 had the highest mean, median, and maximum for all states. The gas with minimum levels for all states was SO2. Each state had many distinct observations for the gasses. Lastly, for our correlation test, we had to filter certain variables in order for the code to run. This is because, our original dataset was too large, with multiple numeric variables that were unnecessary to run in a correlation such as price, country code, deaths and rebirths. As a result, we found that there is a strong correlation with Fossil Fuel consumption, Energy Production and Natural Gas consumption. But the levels of gasses in the atmosphere do not directly correlate.</p>
+</div>
+<div id="visualization" class="section level2">
+<h2>Visualization</h2>
+<pre class="r"><code>library(ggplot2)
+cordata %&gt;% ggplot(aes(var1,var2,fill= correlation)) + geom_tile() + geom_text(aes(label = round(correlation,2))) + xlab(&quot;&quot;) + ylab(&quot;&quot;) + coord_fixed() + scale_fill_gradient2(low = &quot;red&quot;, mid = &quot;white&quot;, high = &quot;blue&quot;) + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) </code></pre>
+<p><img src="../../project/project1_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>smalldata &lt;- EPMean %&gt;% filter(mean_CO &gt; 0 &amp; mean_TotalP2014 &gt;= 1000000 &amp; State!= &quot;United State&quot; &amp; State!=&quot;District of Columbia&quot; &amp; State!=&quot;Mississippi&quot; &amp; State!=&quot;Montana&quot; &amp; State!=&quot;Nebraska&quot; &amp; State!=&quot;Vermont&quot; &amp; State!=&quot;West Virginia&quot;) %&gt;% arrange(desc(mean_TotalP2014), desc(mean_CO)) %&gt;% select(State, mean_CO, mean_TotalP2014, mean_TotalC2014, mean_NatGasC2014, mean_NO2, mean_O3, mean_SO2) 
+
+ggplot(smalldata, aes(mean_TotalP2014, mean_CO)) + geom_point(aes(color = State)) + geom_smooth(method = &quot;lm&quot;) + ggtitle(&quot;Energy Production vs Carbon Monoxide Mean&quot;) + xlab(&quot;Total Energy Production 2014 (billion BTU)&quot;) + ylab(&quot;Carbon Monoxide Mean (parts per million)&quot;)</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="../../project/project1_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
+<pre class="r"><code>ggplot(smalldata, aes(x= mean_SO2, mean_CO, fill = State)) + geom_bar(stat = &quot;summary&quot;, position = &#39;dodge&#39;) + scale_x_continuous(breaks = seq(0,7,1))+ggtitle(&quot;Sulfur Dioxide Mean vs Carbon Monoxide Mean&quot;) + xlab(&quot;Sulfur Dioxide Mean (parts per billion)&quot;) + ylab(&quot;Carbon Monoxide Mean (parts per million)&quot;)</code></pre>
+<pre><code>## No summary function supplied, defaulting to `mean_se()`</code></pre>
+<p><img src="../../project/project1_files/figure-html/unnamed-chunk-3-3.png" width="672" /></p>
+<p>Creating a correlation Heatmap, we can see the negative and positive correlation in our variables. As we can see, the production of Energy in 2014 does not seem to correlate with the levels of gasses in the atmosphere but positively correlate with the consumption of Fossil Fuels, Coal and Natural gasses by having values of 0.5 or greater. We know this by comparing their values from the scale 1.0 to -1.0, where 1 means it correlates completely and -1 means it correlates in opposite directions. Thus, using our heatmap we can see how the level of gasses correlate to one another, the mean of Carbon Monoxide positively correlating at 0.66 with the mean of Nitrogen Dioxide. Looking at the Total Production of Energy in 2014 in comparison to the Mean Carbon Monoxide, there is an opposite relationship of -0.27. This unexpected correlation might be due to the population size in that state, land size, where the sample was taken from, and other factors that influence the atmosphere.</p>
+<p>In our scatterplot, we compared the Total Energy Production in 2014 to the Mean Carbon Monoxide levels in each state. Because our original correlation dataset was still too large to form a coherent plot, I used the mean of each state to only get a single observation per state rather than having multiple states with many numeric observations. Thus, our plot shows how there is a negative trend line, indicating that the level of carbon monoxide in the atmosphere is negatively related to the production of energy. However, we can see that some states do have an extremely high production of energy and levels of monoxide (Texas) but they are considered outliers.</p>
+<p>Our third plot we compared the level of Carbon Monoxide to the level of Sulfur Dioxide as a way to compare the relationship between two gasses. The bar graph indicates that there is no discernible relationship between the gasses per state in the atmosphere. This means that because there is a high level of Carbon Monoxide in the atmopshere for that state, does not mean that there will be a high or low level of sulfur dioxide. For instance, California has a low level of Sulfur Dioxoide but one of the highest level of Carbon Monoxide. Alaska differs from California where it has a greater amount of Sulfur Dioxide and Carbon Monoxide.</p>
+</div>
+<div id="dimensionality-reduction" class="section level2">
+<h2>Dimensionality Reduction</h2>
+<pre class="r"><code>library(GGally)</code></pre>
+<pre><code>## Registered S3 method overwritten by &#39;GGally&#39;:
+##   method from   
+##   +.gg   ggplot2</code></pre>
+<pre class="r"><code>library(cluster)
+library(plotly)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;plotly&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:ggplot2&#39;:
+## 
+##     last_plot</code></pre>
+<pre><code>## The following object is masked from &#39;package:stats&#39;:
+## 
+##     filter</code></pre>
+<pre><code>## The following object is masked from &#39;package:graphics&#39;:
+## 
+##     layout</code></pre>
+<pre class="r"><code>clustereddata &lt;- smalldata %&gt;% select(-State)
+pam1 &lt;- clustereddata %&gt;% scale %&gt;% pam(5)
+pam1</code></pre>
+<pre><code>## Medoids:
+##      ID    mean_CO mean_TotalP2014 mean_TotalC2014 mean_NatGasC2014
+## [1,]  1 -0.3644295       3.4073274       3.2266152        3.2509323
+## [2,]  2 -1.5735178       1.3962561      -0.7752383       -0.7353352
+## [3,]  7  1.0559382      -0.1933248       0.4365379        0.6549860
+## [4,] 15 -0.6698675      -0.5593037      -0.3147785       -0.2369556
+## [5,] 13  1.1517621      -0.5296568      -0.7533881       -0.5517095
+##          mean_NO2    mean_O3   mean_SO2
+## [1,]  0.070165611 -0.1114985 -0.5632431
+## [2,] -2.133175604  2.1772091 -0.9707276
+## [3,]  0.645057524 -0.5607752  0.2915683
+## [4,] -0.509032620 -0.3265559 -0.5339511
+## [5,] -0.003967718 -2.5246893  2.6452791
+## Clustering vector:
+##  [1] 1 2 3 4 4 3 3 3 4 3 4 3 5 4 4 4 3 4
+## Objective function:
+##    build     swap 
+## 1.252686 1.222837 
+## 
+## Available components:
+##  [1] &quot;medoids&quot;    &quot;id.med&quot;     &quot;clustering&quot; &quot;objective&quot;  &quot;isolation&quot; 
+##  [6] &quot;clusinfo&quot;   &quot;silinfo&quot;    &quot;diss&quot;       &quot;call&quot;       &quot;data&quot;</code></pre>
+<pre class="r"><code>clustpam &lt;- clustereddata %&gt;% mutate(cluster = as.factor(pam1$clustering))
+
+sil_width&lt;-vector()
+for(i in 2:10){
+  pam_fit &lt;- pam(clustereddata, diss = TRUE, k = i)
+  sil_width[i] &lt;- pam_fit$silinfo$avg.width 
+  }
+ ggplot()+geom_line(aes(x=1:10,y=sil_width))+scale_x_continuous(name=&quot;k&quot;,breaks=1:10)</code></pre>
+<p><img src="../../project/project1_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>plot(pam1, which = 2)  </code></pre>
+<p><img src="../../project/project1_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
+<pre class="r"><code>clustpam%&gt;%plot_ly(x= ~mean_CO, y = ~mean_TotalP2014, z = ~mean_NO2, color= ~cluster,
+type = &quot;scatter3d&quot;, mode = &quot;markers&quot;) %&gt;%
+layout(autosize = F, width = 900, height = 400)</code></pre>
+<div id="htmlwidget-1" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"visdat":{"4c7161a4380c":["function () ","plotlyVisDat"]},"cur_data":"4c7161a4380c","attrs":{"4c7161a4380c":{"x":{},"y":{},"z":{},"mode":"markers","color":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d"}},"layout":{"width":900,"height":400,"margin":{"b":40,"l":60,"t":25,"r":10},"autosize":false,"scene":{"xaxis":{"title":"mean_CO"},"yaxis":{"title":"mean_TotalP2014"},"zaxis":{"title":"mean_NO2"}},"hovermode":"closest","showlegend":true},"source":"A","config":{"showSendToCloud":false},"data":[{"x":[0.247957383294916],"y":[17597105],"z":[11.5923942218525],"mode":"markers","type":"scatter3d","name":"1","marker":{"color":"rgba(102,194,165,1)","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,1)"},"error_y":{"color":"rgba(102,194,165,1)"},"error_x":{"color":"rgba(102,194,165,1)"},"line":{"color":"rgba(102,194,165,1)"},"frame":null},{"x":[0.108020394083384],"y":[9361755],"z":[3.29293300291232],"mode":"markers","type":"scatter3d","name":"2","marker":{"color":"rgba(252,141,98,1)","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)"},"error_y":{"color":"rgba(252,141,98,1)"},"error_x":{"color":"rgba(252,141,98,1)"},"line":{"color":"rgba(252,141,98,1)"},"frame":null},{"x":[0.241591895088199,0.443112310389906,0.412347336097847,0.392759334583766,0.447484571977047,0.270534054940263,0.35709110053138],"y":[7087392,3041634,2852411,2683815,2413494,1547368,1123098],"z":[12.4167287539758,19.634274501563,13.7578750419703,15.5681938159869,13.6518936276491,12.1138167846865,12.1194768638518],"mode":"markers","type":"scatter3d","name":"3","marker":{"color":"rgba(141,160,203,1)","line":{"color":"rgba(141,160,203,1)"}},"textfont":{"color":"rgba(141,160,203,1)"},"error_y":{"color":"rgba(141,160,203,1)"},"error_x":{"color":"rgba(141,160,203,1)"},"line":{"color":"rgba(141,160,203,1)"},"frame":null},{"x":[0.140371923590936,0.168464333272826,0.210986223702665,0.164494514503609,0.422392688554285,0.212606714331414,0.354010935625288,0.204776874220374],"y":[3572829,3261360,2514744,2055121,1454325,1353725,1170681,1027404],"z":[6.7631393454387,4.79394549664186,12.344544169425,11.9894426532752,9.75370149462244,9.41069253166987,13.1844459007845,10.2050977442827],"mode":"markers","type":"scatter3d","name":"4","marker":{"color":"rgba(231,138,195,1)","line":{"color":"rgba(231,138,195,1)"}},"textfont":{"color":"rgba(231,138,195,1)"},"error_y":{"color":"rgba(231,138,195,1)"},"error_x":{"color":"rgba(231,138,195,1)"},"line":{"color":"rgba(231,138,195,1)"},"frame":null},{"x":[0.423437759878419],"y":[1475129],"z":[11.3131516403242],"mode":"markers","type":"scatter3d","name":"5","marker":{"color":"rgba(166,216,84,1)","line":{"color":"rgba(166,216,84,1)"}},"textfont":{"color":"rgba(166,216,84,1)"},"error_y":{"color":"rgba(166,216,84,1)"},"error_x":{"color":"rgba(166,216,84,1)"},"line":{"color":"rgba(166,216,84,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>pam2 &lt;- clustereddata %&gt;% scale %&gt;% pam(2)
+clustpam1 &lt;- clustereddata %&gt;% mutate(cluster = as.factor(pam2$clustering))
+ggpairs(clustpam1, columns = 1:3, aes(color = cluster))</code></pre>
+<p><img src="../../project/project1_files/figure-html/unnamed-chunk-4-4.png" width="672" /></p>
+<p>In this section, I created a separated dataset by taking EPMean, which we created a while ago as a way to get a single observation per state rather than having multiple states with many numeric observations and selected only the numerical variables I will be focusing on by selecting States out and naming it clustereddata.Then I ran a cluster analysis using &quot;pam&quot; resulting in a table of Medoids, a Clustering vector, Objective function, and Available components. Next I checked the number of clusters in my data, using the silhouette method which resulted in the optimal number of clusters being 5. We created an empty vector and used a &quot;for&quot; function to create a pamfit for the cluster data. Then we were able to use ggplot with ten breaks in the x-axis to identify how many number of clusters was optimal. Furthermore, by running the code &quot;pam1&quot; and scaling it, I got an average silhouette width of 0.19 where there is no substantial structure found.</p>
+<p>Lastly, by taking the 3 numerical variables in my dataset, mean_NO2, mean_TotalP2014, and mean_CO, I created a 3D visual with x,y, and z planes using plotly. This 3D model illustrates how there are only 5 clusters, indicating how there is no discernible pattern or cluster formation. It is difficult to interpret and could be due to the large geography of the US and where the atmospheric samples were taken. For instance, comparing the regions of the United States, there are many states with different elevations and population densities that contribute to the amount of gasses in the air. This would account as to why our goodness of fit test gave an average silhouette width of 0.19 since there was no substantial structure with these clusters.</p>
+</div>
+
+            
+        <hr>         <div class="related-posts">
+                <h5>Related Posts</h5>
+                
+              </div> 
+            </div>
+          </div>
+
+   <hr>  <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = '';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div> 
+        </div>
+      </div>
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="../../js/docs.min.js"></script>
+<script src="../../js/main.js"></script>
+
+<script src="../../js/ie10-viewport-bug-workaround.js"></script>
+
+
+    
+  </body>
+</html>

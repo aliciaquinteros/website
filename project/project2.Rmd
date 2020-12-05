@@ -1,0 +1,239 @@
+---
+title: "Modeling, Testing and Predicting"
+author: "Alicia Quinteros"
+date: "2020-12-03"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+## Introduction
+
+##### In this project, I will be using the 'Weather' dataset to analyze the weather conditions in the different cities by month, and use average humidity, average wind, and average tempreture as a way to compare the weather in the different cities. This would allow us to predict the type of enviorment each city is like and compare the conditions of each city to each other. The dataset has 3,655 observations with 26 variables.   
+
+```{r cars}
+getwd()
+Weather <- read.csv("/stor/home/aeq242/Weather.csv")
+Weather$year <- ifelse(Weather$year == '2016', 1, 0)
+library(dplyr)
+head(Weather)
+```
+
+## MANOVA testing 
+```{R}
+Weather1<-Weather%>%select(city,month,avg_temp,avg_humidity,avg_wind,events,year)
+
+WeatherManova<-manova(cbind(avg_humidity, avg_temp,avg_wind)~city, data=Weather1)
+summary(WeatherManova)
+
+summary.aov(WeatherManova)
+Weather1%>%group_by(city)%>%summarize(mean(avg_temp),mean(avg_humidity), mean(avg_wind))
+
+pairwise.t.test(Weather1$avg_temp,Weather1$city, p.adj = "none")
+pairwise.t.test(Weather1$avg_humidity, Weather1$city, p.adj = "none")
+pairwise.t.test(Weather1$avg_wind, Weather1$city, p.adj = "none")
+
+0.05/34
+```
+By conducting a one-way MANOVA test, we can see the different weather patterns and their effects in each city by using the variables : avg_humidity, avg_temp, and avg_wind. Running the MANOVA test, we can assume that the variables are dependent, have a multivariate normality, have an equal covariance, no outlier's, and are not too correlated. We found significant differences in our values where the Pillai trace = .77281, pseudo F(12, 10950) = 316.63, and p < 0.0001. We then ran a univariate ANOVA, where all 3 variables turned out to be significant, and used the Bonferroni method to control for type-I error rates, coming out to be 0.001470588. Majority of the post-hoc t tests showed significant differences, avg_temp was completely significantly different, while avg_humidity and avg_wind had values greater than 0.05. 
+
+## Randomization Test
+```{R}
+library(ggplot2)
+library(tidyr)
+
+Fstat<-vector()
+for(i in 1:10000){
+g1<-rnorm(36)
+g2<-rnorm(36)
+g3<-rnorm(36)
+SSW<- sum((g1-mean(g1))^2+(g2-mean(g2))^2+(g3-mean(g3))^2)
+SSB<- 36*sum( (mean(c(g1,g2,g3))-c(mean(g1),mean(g2),mean(g3)))^2 )
+Fstat[i]<- (SSB/2)/(SSW/105)
+}
+data.frame(Fstat) %>% ggplot(aes(Fstat)) + geom_histogram(aes(y=..density..))+ 
+stat_function(fun=dt,args=list(df=35),geom="line")
+
+ summary(aov(avg_wind~avg_humidity,data=Weather1))
+ 
+
+```
+
+The null hypothesis states that the avg_wind of the city does not differ based on the avg_humidity of the city. Alternative hypothesis, the avg_wind does differ based on the avg_humidity. Based on the p-value we obtained in the randomization test, we can reject the null hypothesis since our p-value is 2.58e-14, less than 0.05. This would mean the humidity of the city affects the average wind. 
+
+## Linear Regression Model 
+```{R}
+Weather1$avg_temp_c <- Weather1$avg_temp - mean(Weather1$avg_temp)
+Weather1$avg_wind_c <- Weather$avg_wind - mean(Weather1$avg_wind)
+fit<-lm(avg_wind_c ~ city*avg_temp_c, data=Weather1)
+summary(fit)
+
+ggplot(Weather1, aes(avg_temp,avg_wind, color = city)) + geom_smooth(method = "lm", se = F, fullrange = T) +
+geom_point()+geom_vline(xintercept=0,lty=2)+geom_vline(xintercept=mean(Weather1$avg_temp))
+
+resids<-fit$residuals
+fitvals<-fit$fitted.values
+ggplot()+geom_point(aes(fitvals,resids))+geom_hline(yintercept=0, color='red') 
+
+ggplot()+geom_histogram(aes(resids), bins=20)
+shapiro.test(resids)
+
+library(sandwich)
+library(lmtest)
+bptest(fit)
+summary(fit)$coef[,1:2]
+coeftest(fit, vcov = vcovHC(fit))[,1:2]
+
+summary(fit)
+```
+The intercept of 2.268880 is the avg_wind centered for Auckland with average temperatures. Beijing, Chicago, Mumbai, and San Diego all have lower predicted average winds of 4.060755, 0.317646,8.263431, and 4.066275 respectively. This is lower than Auckland with average temperatures. For every one unit increase in average temperature, predicted average wind increases by 0.028905mph for the city of Auckland. The slope of the average temperature on the average wind of Beijing and Chicago is 0.059667 and 0.073607, respectively,lower than for Auckland. In comparison the slope of the average temperature on the average wind of Mumbai and San Diego is 0.232354 and 0.004175, respectively, higher than for Auckland. 
+
+Testing for homoskedasticity, linearity, and normality we can see in our ggplots that it fails for homoskedasticity and linearity because of the uneven distribution tending towards either the left or the right. The dataset for Weather1 also does not pass the normality test due to having a p-value of 2.2e-16, based on the Shapiro-Wilk normality test, and outliers as we can see in our histogram. 
+
+Next, we conducted the BP test which resulted in our p-value to be significant, rejecting the null hypothesis for homoskedasticity. Then, by running the robust standard errors our uncorrected SE and corrected SE show variation from one another which further proves how our dataset homoskedasticity. 
+
+Lastly, 0.2711 of the variation in the outcome is explained by our model. (we obtained this by running summary(fit))
+
+## Bootstrapped Standard Errors
+```{R}
+samps<-replicate(5000, {
+boots <- sample_frac(Weather1, replace=T)
+fits <- lm(avg_wind_c ~ avg_temp_c*city, data=boots)
+coef(fits)
+})
+samps %>% t %>% as.data.frame %>% summarize_all(sd)
+```
+
+When comparing the bootstrapped standard error to the corrected robust standard error, we can see that they are very similar and hardly differ from one another. There is still some variation, though, with the bootstrap being a little higher than the robust standard error. 
+
+## Logistic Regression Model 
+```{R, warning = FALSE}
+fit2<-glm(year~avg_temp_c+avg_wind_c, data=Weather1, family="binomial")
+coeftest(fit2)
+exp(coef(fit2))
+1- 0.9995666 
+
+prob<-predict(fit2,type="response") 
+pred<-ifelse(prob>.5,1,0)
+table(truth=Weather1$year, prediction=pred)%>%addmargins
+
+(972+850)/3655
+850/1830
+972/1825
+850/1703
+
+library(plotROC)
+ROCplot<-ggplot(Weather1)+geom_roc(aes(d=year,m=pred), n.cuts=0)
+ROCplot
+calc_auc(ROCplot)
+
+
+Weather1$logit<-predict(fit2)
+Weather1 <- Weather1%>%mutate(Year1 = recode(year,"twenty-sixteen","twenty-seventeen"))
+ggplot(Weather1,aes(x = logit, fill=Year1))+geom_density(alpha=.3)
+```
+
+Odds of the year being 2016 decreases by 0.0004334 for every additional degree for temperature. Odds of the year being 2016 increases by 0.0032405 for every additional unit of mph for average wind. Next we generated a confusion matrix and calculated the accuracy to be 0.4984952. This means that about 49.85% of our matrix correctly classified the year. For the sensitivity, the proportion of correctly classifying observations in 2016 was 0.4644809. Then, for the specificity, the proportion of correctly classified observations in 2017 was 0.5326027. For precision, the proportion of predicted 2016 observations that were correct is 0.4991192.We calculated the AUC by generating an ROC plot which illustrated an AUC value of 0.4985418. The AUC value is considered a bad trade-off between sensitivity and specificity. 
+
+In our ggplot comparing density to the log-odds, we are comparing 2016 and 2017. Because my binary column was considered numerical, I re-coded it into a categorical column which allowed me to run the ggplot. However, due to me creating this binary column in the beginning, I assigned 2016 to the binary value of 1 while 2017 was automatically changed to 0, thus making the new column represent 2017 as NA. From the density plot, we can see significant overlap between the two years, making the chance prediction FPR=TPR. This makes sense since our AUC value was close to 0.5.
+
+## Logistic Regression for the rest of the variables
+```{R,warning = FALSE}
+fit3<-glm(year~avg_humidity+month+city+avg_wind+avg_temp, data=Weather1, family="binomial")
+
+prob1<-predict(fit3,type="response") 
+pred1<-ifelse(prob1>.5,1,0)
+table(truth=Weather1$year, prediction=pred1)%>%addmargins
+
+ROCplot2<-ggplot(Weather1)+geom_roc(aes(d=year,m=pred1), n.cuts=0)
+ROCplot2
+calc_auc(ROCplot2)
+
+(849+1026)/3655
+1026/1830
+849/1825
+1026/2002
+
+
+
+class_diag <- function(probs,truth){
+tab<-table(factor(probs>.5,levels=c("FALSE","TRUE")),truth)
+acc=sum(diag(tab))/sum(tab)
+sens=tab[2,2]/colSums(tab)[2]
+spec=tab[1,1]/colSums(tab)[1]
+ppv=tab[2,2]/rowSums(tab)[2]
+f1=2*(sens*ppv)/(sens+ppv)
+if(is.numeric(truth)==FALSE & is.logical(truth)==FALSE) truth<-as.numeric(truth)-1
+
+ord<-order(probs, decreasing=TRUE)
+probs <- probs[ord]; truth <- truth[ord]
+TPR=cumsum(truth)/max(1,sum(truth))
+FPR=cumsum(!truth)/max(1,sum(!truth))
+dup<-c(probs[-1]>=probs[-length(probs)], FALSE)
+TPR<-c(0,TPR[!dup],1); FPR<-c(0,FPR[!dup],1)
+n <- length(TPR)
+auc<- sum( ((TPR[-1]+TPR[-n])/2) * (FPR[-1]-FPR[-n]) )
+data.frame(acc,sens,spec,ppv,f1,auc) 
+}
+
+set.seed(1234)
+k=10 
+data<-Weather1[sample(nrow(Weather1)),]
+folds<-cut(seq(1:nrow(Weather1)),breaks=k,labels=F) 
+diags<-NULL
+for(i in 1:k){
+
+train<-data[folds!=i,]
+test<-data[folds==i,]
+truth<-test$year 
+fit4<-glm(year~avg_humidity+month+city+avg_wind+avg_temp,data=train,family="binomial")
+
+probs<-predict(fit4,newdata = test,type="response")
+
+diags<-rbind(diags,class_diag(probs,truth))
+}
+
+summarise_all(diags,mean)
+
+
+library(glmnet)
+dataasett <- Weather1 %>% select(-avg_temp_c,-avg_wind_c,-logit,-Year1,-events)
+y<-as.matrix(dataasett$year) 
+x<-model.matrix(year~.,data=dataasett)[,-1] 
+cv<-cv.glmnet(x,y,family="binomial")
+lasso<-glmnet(x,y,family="binomial",lambda=cv$lambda.1se)
+coef(lasso)
+
+
+set.seed(1234)
+k=10
+data1 <- dataasett %>% sample_frac 
+folds1 <- ntile(1:nrow(dataasett),n=10) 
+diags1<-NULL
+for(i in 1:k){
+train1 <- data1[folds1!=i,] 
+test1 <- data1[folds1==i,] 
+truth1 <- test1$year
+fit7 <- glm(year~city,
+data=train1, family="binomial")
+probsss <- predict(fit7, newdata=test1, type="response")
+diags1<-rbind(diags,class_diag(probsss,truth1))
+}
+diags1%>%summarize_all(mean)
+```
+
+When running our second confusion matrix, we calculated for accuracy which resulted in being 0.5129959. This would mean we correctly classified 51.3% of the total cases. For the sensitivity, the proportion of correctly classifying observations in 2016 was 0.5606557. Then, for the specificity, the proportion of correctly classified observations in 2017 was 0.4652055. For precision, the proportion of predicted 2016 observations that were correct was 0.5124875. Thus, our AUC value was 0.5129306, The AUC value is considered a bad trade-off between sensitivity and specificity but slightly better than our previous AUC. 
+
+For the CV with k=10, we ran our same model and our values did change for our classification diagnostic. The accuracy, specificity, sensitivity, and precision and AUC were all lower than the original values. The AUC is still considered a very bad trade-off between sensitivity and specificity.
+
+For our LASSO model, the only variable retained was the city of Beijing. Though, I did get the value of lambda to be 0.0000 which would be interpreted as Beijing being the most important predictor with no penalty/no regularization. 
+
+Comparing the classification diagnostic in LASSO to the CV model, not much has changed. The AUC is still considered a very bad trade-off between sensitivity and specificity of 0.4793443 rather than the 0.4822507 we computed with the CV model. When comparing Acc, Sens, Spec, and PPV, the values change only slightly, either lower or higher for both the in-sample and the out-sample tests. 

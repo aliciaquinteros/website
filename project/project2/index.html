@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Alicia Quinteros" />
+    
+    <link rel="shortcut icon" type="image/x-icon" href="../../img/favicon.ico">
+    <title>Modeling, Testing and Predicting</title>
+    <meta name="generator" content="Hugo 0.79.0" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../../css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+  </head>
+
+  <body>
+    <div id="wrap">
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="../../"><i class="fa fa-home"></i></a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="../../post/">BLOG</a></li>
+        
+        <li><a href="../../projects/">PROJECTS</a></li>
+        
+        <li><a href="../../resume/">RESUME</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="../../project/project2/">Modeling, Testing and Predicting</a></strong>
+          </h3>
+        </div>
+ 
+<div class="blog-title">
+          <h4>
+         December 3, 2020 
+            &nbsp;&nbsp;
+            
+          </h4>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+
+<div id="r-markdown" class="section level2">
+<h2>R Markdown</h2>
+<p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
+<p>When you click the <strong>Knit</strong> button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</p>
+</div>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<div id="in-this-project-i-will-be-using-the-weather-dataset-to-analyze-the-weather-conditions-in-the-different-cities-by-month-and-use-average-humidity-average-wind-and-average-tempreture-as-a-way-to-compare-the-weather-in-the-different-cities.-this-would-allow-us-to-predict-the-type-of-enviorment-each-city-is-like-and-compare-the-conditions-of-each-city-to-each-other.-the-dataset-has-3655-observations-with-26-variables." class="section level5">
+<h5>In this project, I will be using the 'Weather' dataset to analyze the weather conditions in the different cities by month, and use average humidity, average wind, and average tempreture as a way to compare the weather in the different cities. This would allow us to predict the type of enviorment each city is like and compare the conditions of each city to each other. The dataset has 3,655 observations with 26 variables.</h5>
+<pre class="r"><code>getwd()</code></pre>
+<pre><code>## [1] &quot;/stor/home/aeq242/R/website/content/project&quot;</code></pre>
+<pre class="r"><code>Weather &lt;- read.csv(&quot;/stor/home/aeq242/Weather.csv&quot;)
+Weather$year &lt;- ifelse(Weather$year == &#39;2016&#39;, 1, 0)
+library(dplyr)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>head(Weather)</code></pre>
+<pre><code>##   X     city       date year month day high_temp avg_temp low_temp high_dewpt
+## 1 1 Auckland 2016-01-01    1     1   1        68       65       62         64
+## 2 2 Auckland 2016-01-02    1     1   2        68       66       64         64
+## 3 3 Auckland 2016-01-03    1     1   3        77       72       66         70
+## 4 4 Auckland 2016-01-04    1     1   4        73       66       60         66
+## 5 5 Auckland 2016-01-05    1     1   5        69       62       55         55
+## 6 6 Auckland 2016-01-06    1     1   6        69       63       57         54
+##   avg_dewpt low_dewpt high_humidity avg_humidity low_humidity high_hg avg_hg
+## 1        60        55           100           82           68   30.15  30.09
+## 2        63        61           100           94           88   30.04  29.90
+## 3        67        64           100           91           74   29.80  29.73
+## 4        60        54           100           76           53   30.12  29.90
+## 5        52        48            82           69           56   30.21  30.14
+## 6        51        46            88           65           46   30.24  30.22
+##   low_hg high_vis avg_vis low_vis high_wind avg_wind low_wind precip events
+## 1  30.01        6       6       4        21       15       28      0   Rain
+## 2  29.80        6       5       1        33       21       46      0   Rain
+## 3  29.68        6       6       1        18       12       NA      0   Rain
+## 4  29.77        6       6       6        15       10       NA      0   Rain
+## 5  30.09        6       6       6        13        7       NA      0   &lt;NA&gt;
+## 6  30.18        6       6       6        17        8       28      0   &lt;NA&gt;</code></pre>
+</div>
+</div>
+<div id="manova-testing" class="section level2">
+<h2>MANOVA testing</h2>
+<pre class="r"><code>Weather1&lt;-Weather%&gt;%select(city,month,avg_temp,avg_humidity,avg_wind,events,year)
+
+WeatherManova&lt;-manova(cbind(avg_humidity, avg_temp,avg_wind)~city, data=Weather1)
+summary(WeatherManova)</code></pre>
+<pre><code>##             Df  Pillai approx F num Df den Df    Pr(&gt;F)    
+## city         4 0.77281   316.63     12  10950 &lt; 2.2e-16 ***
+## Residuals 3650                                             
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>summary.aov(WeatherManova)</code></pre>
+<pre><code>##  Response avg_humidity :
+##               Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## city           4 276425   69106  327.13 &lt; 2.2e-16 ***
+## Residuals   3650 771066     211                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+##  Response avg_temp :
+##               Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## city           4 367362   91840  516.64 &lt; 2.2e-16 ***
+## Residuals   3650 648847     178                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+##  Response avg_wind :
+##               Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## city           4  13038  3259.4  286.35 &lt; 2.2e-16 ***
+## Residuals   3650  41547    11.4                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>Weather1%&gt;%group_by(city)%&gt;%summarize(mean(avg_temp),mean(avg_humidity), mean(avg_wind))</code></pre>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre><code>## # A tibble: 5 x 4
+##   city      `mean(avg_temp)` `mean(avg_humidity)` `mean(avg_wind)`
+##   &lt;fct&gt;                &lt;dbl&gt;                &lt;dbl&gt;            &lt;dbl&gt;
+## 1 Auckland              60.6                 80.4             9.66
+## 2 Beijing               55.5                 53.0             5.91
+## 3 Chicago               52.7                 67.4             9.89
+## 4 Mumbai                80.9                 66.4             6.09
+## 5 San Diego             66.6                 65.0             5.78</code></pre>
+<pre class="r"><code>pairwise.t.test(Weather1$avg_temp,Weather1$city, p.adj = &quot;none&quot;)</code></pre>
+<pre><code>## 
+##  Pairwise comparisons using t tests with pooled SD 
+## 
+## data:  Weather1$avg_temp and Weather1$city 
+## 
+##           Auckland Beijing Chicago Mumbai 
+## Beijing   2.4e-13  -       -       -      
+## Chicago   &lt; 2e-16  5.9e-05 -       -      
+## Mumbai    &lt; 2e-16  &lt; 2e-16 &lt; 2e-16 -      
+## San Diego &lt; 2e-16  &lt; 2e-16 &lt; 2e-16 &lt; 2e-16
+## 
+## P value adjustment method: none</code></pre>
+<pre class="r"><code>pairwise.t.test(Weather1$avg_humidity, Weather1$city, p.adj = &quot;none&quot;)</code></pre>
+<pre><code>## 
+##  Pairwise comparisons using t tests with pooled SD 
+## 
+## data:  Weather1$avg_humidity and Weather1$city 
+## 
+##           Auckland Beijing Chicago Mumbai
+## Beijing   &lt;2e-16   -       -       -     
+## Chicago   &lt;2e-16   &lt;2e-16  -       -     
+## Mumbai    &lt;2e-16   &lt;2e-16  0.1738  -     
+## San Diego &lt;2e-16   &lt;2e-16  0.0015  0.0681
+## 
+## P value adjustment method: none</code></pre>
+<pre class="r"><code>pairwise.t.test(Weather1$avg_wind, Weather1$city, p.adj = &quot;none&quot;)</code></pre>
+<pre><code>## 
+##  Pairwise comparisons using t tests with pooled SD 
+## 
+## data:  Weather1$avg_wind and Weather1$city 
+## 
+##           Auckland Beijing Chicago Mumbai
+## Beijing   &lt;2e-16   -       -       -     
+## Chicago   0.190    &lt;2e-16  -       -     
+## Mumbai    &lt;2e-16   0.314   &lt;2e-16  -     
+## San Diego &lt;2e-16   0.443   &lt;2e-16  0.076 
+## 
+## P value adjustment method: none</code></pre>
+<pre class="r"><code>0.05/34</code></pre>
+<pre><code>## [1] 0.001470588</code></pre>
+<p>By conducting a one-way MANOVA test, we can see the different weather patterns and their effects in each city by using the variables : avg_humidity, avg_temp, and avg_wind. Running the MANOVA test, we can assume that the variables are dependent, have a multivariate normality, have an equal covariance, no outlier's, and are not too correlated. We found significant differences in our values where the Pillai trace = .77281, pseudo F(12, 10950) = 316.63, and p &lt; 0.0001. We then ran a univariate ANOVA, where all 3 variables turned out to be significant, and used the Bonferroni method to control for type-I error rates, coming out to be 0.001470588. Majority of the post-hoc t tests showed significant differences, avg_temp was completely significantly different, while avg_humidity and avg_wind had values greater than 0.05.</p>
+</div>
+<div id="randomization-test" class="section level2">
+<h2>Randomization Test</h2>
+<pre class="r"><code>library(ggplot2)
+library(tidyr)
+
+Fstat&lt;-vector()
+for(i in 1:10000){
+g1&lt;-rnorm(36)
+g2&lt;-rnorm(36)
+g3&lt;-rnorm(36)
+SSW&lt;- sum((g1-mean(g1))^2+(g2-mean(g2))^2+(g3-mean(g3))^2)
+SSB&lt;- 36*sum( (mean(c(g1,g2,g3))-c(mean(g1),mean(g2),mean(g3)))^2 )
+Fstat[i]&lt;- (SSB/2)/(SSW/105)
+}
+data.frame(Fstat) %&gt;% ggplot(aes(Fstat)) + geom_histogram(aes(y=..density..))+ 
+stat_function(fun=dt,args=list(df=35),geom=&quot;line&quot;)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="../../project/project2_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<pre class="r"><code> summary(aov(avg_wind~avg_humidity,data=Weather1))</code></pre>
+<pre><code>##                Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+## avg_humidity    1    860   860.4    58.5 2.58e-14 ***
+## Residuals    3653  53725    14.7                     
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>The null hypothesis states that the avg_wind of the city does not differ based on the avg_humidity of the city. Alternative hypothesis, the avg_wind does differ based on the avg_humidity. Based on the p-value we obtained in the randomization test, we can reject the null hypothesis since our p-value is 2.58e-14, less than 0.05. This would mean the humidity of the city affects the average wind.</p>
+</div>
+<div id="linear-regression-model" class="section level2">
+<h2>Linear Regression Model</h2>
+<pre class="r"><code>Weather1$avg_temp_c &lt;- Weather1$avg_temp - mean(Weather1$avg_temp)
+Weather1$avg_wind_c &lt;- Weather$avg_wind - mean(Weather1$avg_wind)
+fit&lt;-lm(avg_wind_c ~ city*avg_temp_c, data=Weather1)
+summary(fit)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = avg_wind_c ~ city * avg_temp_c, data = Weather1)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -8.9912 -2.0289 -0.4928  1.4768 18.4190 
+## 
+## Coefficients:
+##                           Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)               2.268880   0.131728  17.224  &lt; 2e-16 ***
+## cityBeijing              -4.060755   0.185653 -21.873  &lt; 2e-16 ***
+## cityChicago              -0.317646   0.191548  -1.658 0.097341 .  
+## cityMumbai               -8.263431   0.548920 -15.054  &lt; 2e-16 ***
+## citySan Diego            -4.066275   0.191905 -21.189  &lt; 2e-16 ***
+## avg_temp_c                0.028905   0.018642   1.550 0.121113    
+## cityBeijing:avg_temp_c   -0.059667   0.019588  -3.046 0.002336 ** 
+## cityChicago:avg_temp_c   -0.073607   0.019671  -3.742 0.000186 ***
+## cityMumbai:avg_temp_c     0.232354   0.034757   6.685 2.66e-11 ***
+## citySan Diego:avg_temp_c  0.004175   0.027672   0.151 0.880075    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 3.304 on 3645 degrees of freedom
+## Multiple R-squared:  0.2711, Adjusted R-squared:  0.2693 
+## F-statistic: 150.6 on 9 and 3645 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>ggplot(Weather1, aes(avg_temp,avg_wind, color = city)) + geom_smooth(method = &quot;lm&quot;, se = F, fullrange = T) +
+geom_point()+geom_vline(xintercept=0,lty=2)+geom_vline(xintercept=mean(Weather1$avg_temp))</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="../../project/project2_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>resids&lt;-fit$residuals
+fitvals&lt;-fit$fitted.values
+ggplot()+geom_point(aes(fitvals,resids))+geom_hline(yintercept=0, color=&#39;red&#39;) </code></pre>
+<p><img src="../../project/project2_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
+<pre class="r"><code>ggplot()+geom_histogram(aes(resids), bins=20)</code></pre>
+<p><img src="../../project/project2_files/figure-html/unnamed-chunk-3-3.png" width="672" /></p>
+<pre class="r"><code>shapiro.test(resids)</code></pre>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  resids
+## W = 0.94745, p-value &lt; 2.2e-16</code></pre>
+<pre class="r"><code>library(sandwich)
+library(lmtest)</code></pre>
+<pre><code>## Loading required package: zoo</code></pre>
+<pre><code>## 
+## Attaching package: &#39;zoo&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     as.Date, as.Date.numeric</code></pre>
+<pre class="r"><code>bptest(fit)</code></pre>
+<pre><code>## 
+##  studentized Breusch-Pagan test
+## 
+## data:  fit
+## BP = 412.28, df = 9, p-value &lt; 2.2e-16</code></pre>
+<pre class="r"><code>summary(fit)$coef[,1:2]</code></pre>
+<pre><code>##                              Estimate Std. Error
+## (Intercept)               2.268879913 0.13172762
+## cityBeijing              -4.060754783 0.18565272
+## cityChicago              -0.317646197 0.19154827
+## cityMumbai               -8.263431259 0.54891986
+## citySan Diego            -4.066275443 0.19190464
+## avg_temp_c                0.028904612 0.01864236
+## cityBeijing:avg_temp_c   -0.059666620 0.01958849
+## cityChicago:avg_temp_c   -0.073606617 0.01967135
+## cityMumbai:avg_temp_c     0.232353785 0.03475704
+## citySan Diego:avg_temp_c  0.004175303 0.02767220</code></pre>
+<pre class="r"><code>coeftest(fit, vcov = vcovHC(fit))[,1:2]</code></pre>
+<pre><code>##                              Estimate Std. Error
+## (Intercept)               2.268879913 0.17605125
+## cityBeijing              -4.060754783 0.19612811
+## cityChicago              -0.317646197 0.22667886
+## cityMumbai               -8.263431259 0.32839219
+## citySan Diego            -4.066275443 0.21150562
+## avg_temp_c                0.028904612 0.02668576
+## cityBeijing:avg_temp_c   -0.059666620 0.02731509
+## cityChicago:avg_temp_c   -0.073606617 0.02741574
+## cityMumbai:avg_temp_c     0.232353785 0.03105038
+## citySan Diego:avg_temp_c  0.004175303 0.03086240</code></pre>
+<pre class="r"><code>summary(fit)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = avg_wind_c ~ city * avg_temp_c, data = Weather1)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -8.9912 -2.0289 -0.4928  1.4768 18.4190 
+## 
+## Coefficients:
+##                           Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)               2.268880   0.131728  17.224  &lt; 2e-16 ***
+## cityBeijing              -4.060755   0.185653 -21.873  &lt; 2e-16 ***
+## cityChicago              -0.317646   0.191548  -1.658 0.097341 .  
+## cityMumbai               -8.263431   0.548920 -15.054  &lt; 2e-16 ***
+## citySan Diego            -4.066275   0.191905 -21.189  &lt; 2e-16 ***
+## avg_temp_c                0.028905   0.018642   1.550 0.121113    
+## cityBeijing:avg_temp_c   -0.059667   0.019588  -3.046 0.002336 ** 
+## cityChicago:avg_temp_c   -0.073607   0.019671  -3.742 0.000186 ***
+## cityMumbai:avg_temp_c     0.232354   0.034757   6.685 2.66e-11 ***
+## citySan Diego:avg_temp_c  0.004175   0.027672   0.151 0.880075    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 3.304 on 3645 degrees of freedom
+## Multiple R-squared:  0.2711, Adjusted R-squared:  0.2693 
+## F-statistic: 150.6 on 9 and 3645 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>The intercept of 2.268880 is the avg_wind centered for Auckland with average temperatures. Beijing, Chicago, Mumbai, and San Diego all have lower predicted average winds of 4.060755, 0.317646,8.263431, and 4.066275 respectively. This is lower than Auckland with average temperatures. For every one unit increase in average temperature, predicted average wind increases by 0.028905mph for the city of Auckland. The slope of the average temperature on the average wind of Beijing and Chicago is 0.059667 and 0.073607, respectively,lower than for Auckland. In comparison the slope of the average temperature on the average wind of Mumbai and San Diego is 0.232354 and 0.004175, respectively, higher than for Auckland.</p>
+<p>Testing for homoskedasticity, linearity, and normality we can see in our ggplots that it fails for homoskedasticity and linearity because of the uneven distribution tending towards either the left or the right. The dataset for Weather1 also does not pass the normality test due to having a p-value of 2.2e-16, based on the Shapiro-Wilk normality test, and outliers as we can see in our histogram.</p>
+<p>Next, we conducted the BP test which resulted in our p-value to be significant, rejecting the null hypothesis for homoskedasticity. Then, by running the robust standard errors our uncorrected SE and corrected SE show variation from one another which further proves how our dataset homoskedasticity.</p>
+<p>Lastly, 0.2711 of the variation in the outcome is explained by our model. (we obtained this by running summary(fit))</p>
+</div>
+<div id="bootstrapped-standard-errors" class="section level2">
+<h2>Bootstrapped Standard Errors</h2>
+<pre class="r"><code>samps&lt;-replicate(5000, {
+boots &lt;- sample_frac(Weather1, replace=T)
+fits &lt;- lm(avg_wind_c ~ avg_temp_c*city, data=boots)
+coef(fits)
+})
+samps %&gt;% t %&gt;% as.data.frame %&gt;% summarize_all(sd)</code></pre>
+<pre><code>##   (Intercept) avg_temp_c cityBeijing cityChicago cityMumbai citySan Diego
+## 1   0.1765518 0.02649109   0.1976302   0.2290005   0.331805     0.2135352
+##   avg_temp_c:cityBeijing avg_temp_c:cityChicago avg_temp_c:cityMumbai
+## 1             0.02708667              0.0273139            0.03118497
+##   avg_temp_c:citySan Diego
+## 1               0.03043902</code></pre>
+<p>When comparing the bootstrapped standard error to the corrected robust standard error, we can see that they are very similar and hardly differ from one another. There is still some variation, though, with the bootstrap being a little higher than the robust standard error.</p>
+</div>
+<div id="logistic-regression-model" class="section level2">
+<h2>Logistic Regression Model</h2>
+<pre class="r"><code>fit2&lt;-glm(year~avg_temp_c+avg_wind_c, data=Weather1, family=&quot;binomial&quot;)
+coeftest(fit2)</code></pre>
+<pre><code>## 
+## z test of coefficients:
+## 
+##                Estimate  Std. Error z value Pr(&gt;|z|)
+## (Intercept)  0.00273651  0.03308264  0.0827   0.9341
+## avg_temp_c  -0.00043354  0.00203542 -0.2130   0.8313
+## avg_wind_c   0.00323521  0.00878291  0.3684   0.7126</code></pre>
+<pre class="r"><code>exp(coef(fit2))</code></pre>
+<pre><code>## (Intercept)  avg_temp_c  avg_wind_c 
+##   1.0027403   0.9995666   1.0032405</code></pre>
+<pre class="r"><code>1- 0.9995666 </code></pre>
+<pre><code>## [1] 0.0004334</code></pre>
+<pre class="r"><code>prob&lt;-predict(fit2,type=&quot;response&quot;) 
+pred&lt;-ifelse(prob&gt;.5,1,0)
+table(truth=Weather1$year, prediction=pred)%&gt;%addmargins</code></pre>
+<pre><code>##      prediction
+## truth    0    1  Sum
+##   0    972  853 1825
+##   1    980  850 1830
+##   Sum 1952 1703 3655</code></pre>
+<pre class="r"><code>(972+850)/3655</code></pre>
+<pre><code>## [1] 0.4984952</code></pre>
+<pre class="r"><code>850/1830</code></pre>
+<pre><code>## [1] 0.4644809</code></pre>
+<pre class="r"><code>972/1825</code></pre>
+<pre><code>## [1] 0.5326027</code></pre>
+<pre class="r"><code>850/1703</code></pre>
+<pre><code>## [1] 0.4991192</code></pre>
+<pre class="r"><code>library(plotROC)
+ROCplot&lt;-ggplot(Weather1)+geom_roc(aes(d=year,m=pred), n.cuts=0)
+ROCplot</code></pre>
+<p><img src="../../project/project2_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code>calc_auc(ROCplot)</code></pre>
+<pre><code>##   PANEL group       AUC
+## 1     1    -1 0.4985418</code></pre>
+<pre class="r"><code>Weather1$logit&lt;-predict(fit2)
+Weather1 &lt;- Weather1%&gt;%mutate(Year1 = recode(year,&quot;twenty-sixteen&quot;,&quot;twenty-seventeen&quot;))
+ggplot(Weather1,aes(x = logit, fill=Year1))+geom_density(alpha=.3)</code></pre>
+<p><img src="../../project/project2_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
+<p>Odds of the year being 2016 decreases by 0.0004334 for every additional degree for temperature. Odds of the year being 2016 increases by 0.0032405 for every additional unit of mph for average wind. Next we generated a confusion matrix and calculated the accuracy to be 0.4984952. This means that about 49.85% of our matrix correctly classified the year. For the sensitivity, the proportion of correctly classifying observations in 2016 was 0.4644809. Then, for the specificity, the proportion of correctly classified observations in 2017 was 0.5326027. For precision, the proportion of predicted 2016 observations that were correct is 0.4991192.We calculated the AUC by generating an ROC plot which illustrated an AUC value of 0.4985418. The AUC value is considered a bad trade-off between sensitivity and specificity.</p>
+<p>In our ggplot comparing density to the log-odds, we are comparing 2016 and 2017. Because my binary column was considered numerical, I re-coded it into a categorical column which allowed me to run the ggplot. However, due to me creating this binary column in the beginning, I assigned 2016 to the binary value of 1 while 2017 was automatically changed to 0, thus making the new column represent 2017 as NA. From the density plot, we can see significant overlap between the two years, making the chance prediction FPR=TPR. This makes sense since our AUC value was close to 0.5.</p>
+</div>
+<div id="logistic-regression-for-the-rest-of-the-variables" class="section level2">
+<h2>Logistic Regression for the rest of the variables</h2>
+<pre class="r"><code>fit3&lt;-glm(year~avg_humidity+month+city+avg_wind+avg_temp, data=Weather1, family=&quot;binomial&quot;)
+
+prob1&lt;-predict(fit3,type=&quot;response&quot;) 
+pred1&lt;-ifelse(prob1&gt;.5,1,0)
+table(truth=Weather1$year, prediction=pred1)%&gt;%addmargins</code></pre>
+<pre><code>##      prediction
+## truth    0    1  Sum
+##   0    849  976 1825
+##   1    804 1026 1830
+##   Sum 1653 2002 3655</code></pre>
+<pre class="r"><code>ROCplot2&lt;-ggplot(Weather1)+geom_roc(aes(d=year,m=pred1), n.cuts=0)
+ROCplot2</code></pre>
+<p><img src="../../project/project2_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code>calc_auc(ROCplot2)</code></pre>
+<pre><code>##   PANEL group       AUC
+## 1     1    -1 0.5129306</code></pre>
+<pre class="r"><code>(849+1026)/3655</code></pre>
+<pre><code>## [1] 0.5129959</code></pre>
+<pre class="r"><code>1026/1830</code></pre>
+<pre><code>## [1] 0.5606557</code></pre>
+<pre class="r"><code>849/1825</code></pre>
+<pre><code>## [1] 0.4652055</code></pre>
+<pre class="r"><code>1026/2002</code></pre>
+<pre><code>## [1] 0.5124875</code></pre>
+<pre class="r"><code>class_diag &lt;- function(probs,truth){
+tab&lt;-table(factor(probs&gt;.5,levels=c(&quot;FALSE&quot;,&quot;TRUE&quot;)),truth)
+acc=sum(diag(tab))/sum(tab)
+sens=tab[2,2]/colSums(tab)[2]
+spec=tab[1,1]/colSums(tab)[1]
+ppv=tab[2,2]/rowSums(tab)[2]
+f1=2*(sens*ppv)/(sens+ppv)
+if(is.numeric(truth)==FALSE &amp; is.logical(truth)==FALSE) truth&lt;-as.numeric(truth)-1
+
+ord&lt;-order(probs, decreasing=TRUE)
+probs &lt;- probs[ord]; truth &lt;- truth[ord]
+TPR=cumsum(truth)/max(1,sum(truth))
+FPR=cumsum(!truth)/max(1,sum(!truth))
+dup&lt;-c(probs[-1]&gt;=probs[-length(probs)], FALSE)
+TPR&lt;-c(0,TPR[!dup],1); FPR&lt;-c(0,FPR[!dup],1)
+n &lt;- length(TPR)
+auc&lt;- sum( ((TPR[-1]+TPR[-n])/2) * (FPR[-1]-FPR[-n]) )
+data.frame(acc,sens,spec,ppv,f1,auc) 
+}
+
+set.seed(1234)
+k=10 
+data&lt;-Weather1[sample(nrow(Weather1)),]
+folds&lt;-cut(seq(1:nrow(Weather1)),breaks=k,labels=F) 
+diags&lt;-NULL
+for(i in 1:k){
+
+train&lt;-data[folds!=i,]
+test&lt;-data[folds==i,]
+truth&lt;-test$year 
+fit4&lt;-glm(year~avg_humidity+month+city+avg_wind+avg_temp,data=train,family=&quot;binomial&quot;)
+
+probs&lt;-predict(fit4,newdata = test,type=&quot;response&quot;)
+
+diags&lt;-rbind(diags,class_diag(probs,truth))
+}
+
+summarise_all(diags,mean)</code></pre>
+<pre><code>##        acc     sens      spec       ppv        f1       auc
+## 1 0.484537 0.531025 0.4446892 0.4885607 0.5042221 0.4822507</code></pre>
+<pre class="r"><code>library(glmnet)</code></pre>
+<pre><code>## Loading required package: Matrix</code></pre>
+<pre><code>## 
+## Attaching package: &#39;Matrix&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:tidyr&#39;:
+## 
+##     expand, pack, unpack</code></pre>
+<pre><code>## Loaded glmnet 4.0-2</code></pre>
+<pre class="r"><code>dataasett &lt;- Weather1 %&gt;% select(-avg_temp_c,-avg_wind_c,-logit,-Year1,-events)
+y&lt;-as.matrix(dataasett$year) 
+x&lt;-model.matrix(year~.,data=dataasett)[,-1] 
+cv&lt;-cv.glmnet(x,y,family=&quot;binomial&quot;)
+lasso&lt;-glmnet(x,y,family=&quot;binomial&quot;,lambda=cv$lambda.1se)
+coef(lasso)</code></pre>
+<pre><code>## 9 x 1 sparse Matrix of class &quot;dgCMatrix&quot;
+##                       s0
+## (Intercept)   0.00273598
+## cityBeijing   0.00000000
+## cityChicago   .         
+## cityMumbai    .         
+## citySan Diego .         
+## month         .         
+## avg_temp      .         
+## avg_humidity  .         
+## avg_wind      .</code></pre>
+<pre class="r"><code>set.seed(1234)
+k=10
+data1 &lt;- dataasett %&gt;% sample_frac 
+folds1 &lt;- ntile(1:nrow(dataasett),n=10) 
+diags1&lt;-NULL
+for(i in 1:k){
+train1 &lt;- data1[folds1!=i,] 
+test1 &lt;- data1[folds1==i,] 
+truth1 &lt;- test1$year
+fit7 &lt;- glm(year~city,
+data=train1, family=&quot;binomial&quot;)
+probsss &lt;- predict(fit7, newdata=test1, type=&quot;response&quot;)
+diags1&lt;-rbind(diags,class_diag(probsss,truth1))
+}
+diags1%&gt;%summarize_all(mean)</code></pre>
+<pre><code>##        acc      sens      spec       ppv        f1       auc
+## 1 0.481335 0.5572743 0.4150966 0.4853621 0.5114611 0.4793443</code></pre>
+<p>When running our second confusion matrix, we calculated for accuracy which resulted in being 0.5129959. This would mean we correctly classified 51.3% of the total cases. For the sensitivity, the proportion of correctly classifying observations in 2016 was 0.5606557. Then, for the specificity, the proportion of correctly classified observations in 2017 was 0.4652055. For precision, the proportion of predicted 2016 observations that were correct was 0.5124875. Thus, our AUC value was 0.5129306, The AUC value is considered a bad trade-off between sensitivity and specificity but slightly better than our previous AUC.</p>
+<p>For the CV with k=10, we ran our same model and our values did change for our classification diagnostic. The accuracy, specificity, sensitivity, and precision and AUC were all lower than the original values. The AUC is still considered a very bad trade-off between sensitivity and specificity.</p>
+<p>For our LASSO model, the only variable retained was the city of Beijing. Though, I did get the value of lambda to be 0.0000 which would be interpreted as Beijing being the most important predictor with no penalty/no regularization.</p>
+<p>Comparing the classification diagnostic in LASSO to the CV model, not much has changed. The AUC is still considered a very bad trade-off between sensitivity and specificity of 0.4793443 rather than the 0.4822507 we computed with the CV model. When comparing Acc, Sens, Spec, and PPV, the values change only slightly, either lower or higher for both the in-sample and the out-sample tests.</p>
+</div>
+
+            
+        <hr>         <div class="related-posts">
+                <h5>Related Posts</h5>
+                
+              </div> 
+            </div>
+          </div>
+
+   <hr>  <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = '';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div> 
+        </div>
+      </div>
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="../../js/docs.min.js"></script>
+<script src="../../js/main.js"></script>
+
+<script src="../../js/ie10-viewport-bug-workaround.js"></script>
+
+
+    
+  </body>
+</html>

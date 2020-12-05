@@ -1,0 +1,32 @@
+---
+title: Test Post
+author: ''
+date: '2020-12-04'
+slug: test-post
+categories: []
+tags: []
+description: ''
+---
+
+# Welcome!
+##### down below we have links for project 1 and google 
+
+[Link to project 1](/project1/)
+
+[Link to google](https://www.google.com)
+
+
+```{R}
+hist(quakes$mag)
+```
+
+```{r}
+quakes<-quakes
+head(quakes)
+```
+
+
+```{python}
+r.quakes.mag.mean()
+```
+
